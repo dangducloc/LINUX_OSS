@@ -5,15 +5,15 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.get("/",(req,res)=>{
+app.get("/", (req, res) => {
     res.json({
-        "demo":{
-            "success":true,
-            "msg":"Wellcome to My project!!!"
+        "demo": {
+            "success": true,
+            "msg": "Wellcome to My project!!!"
         }
     });
 });
 
-app.listen(port,()=>{
+app.listen(port, () => {
     console.log(`running on: http://localhost:${port}`);
 });
