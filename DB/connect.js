@@ -7,23 +7,28 @@ const user = process.env.DB_USER || "root";
 const db = process.env.DB_NAME || "LINUS_OSS";
 const pass = process.env.DB_PASS || "linh";
 
-// Debugging
-console.log('User:', user);
-console.log('Database:', db);
-
 // Create the pool for connection to database
-const pool = mysql.createPool({
-  host: host,
-  user: user,       // Use the variable from the .env file
-  password: pass,   // Use the password from the .env file
-  database: db      // Use the database name from the .env file
-});
+function makePool() {
+	const pool = mysql.createPool({
+		host: host,
+		user: user,
+		password: pass,
+		database: db
+	}).promise();
+	return pool;
+}
 
-// Query to show databases
-pool.query("SHOW DATABASES;", (err, results) => {
-  if (err) {
-    console.error('Error querying the databases:', err);
-  } else {
-    console.log('Databases:', results);
-  }
-});
+// Main functions for api
+async function get_all_cakes(pool) {
+	const qr = `
+	SELECT IDFood,Food,Price,TypeID,Amount,img_src,info_Detail,Type 
+	FROM food JOIN type_of_food 
+	ON TypeID = type_of_food.IDType;`
+	const [rs] = await pool.query(qr);
+	return rs;
+}
+
+module.exports = {
+	makePool,
+	get_all_cakes
+};
