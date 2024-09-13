@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server":"npx nodemon app.js"
+    "server": "npx nodemon app.js"
   },
   "keywords": [
     "LINH"
@@ -13,6 +13,7 @@
   "author": "LINH (22NS033_DANG DUC LOC)",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "ejs": "^3.1.6",
     "express": "^4.19.2",
     "mysql2": "^3.11.0",
