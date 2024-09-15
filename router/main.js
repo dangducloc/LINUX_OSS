@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const endpoits = require('../controller/index')
+const endpoits = require('../controller/main')
 
 //define api rourte
 

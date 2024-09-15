@@ -55,6 +55,122 @@ async function Login(pool, name, pass) {
     const [rs] = await pool.query("SELECT * FROM user_table WHERE User_name = ? AND Pass = ?", [name, pass]);
     return rs[0];
 }
+////////////////////////////////////////////////////////////////////////////////////////
+//Cart functions 
+
+//Check if item in cart
+async function checkItemInCart(pool, userID, foodID) {
+    const query = `
+        SELECT * FROM cart
+        WHERE UserID = ? AND IDFood = ?;
+    `;
+    const [rows] = await pool.query(query, [userID, foodID]);
+    return rows.length > 0 ? rows[0] : null; // Return the item if found, otherwise null
+}
+
+//Add to card
+async function addCart(pool,userID, foodID) {
+    try {
+        // Use the helper function to check if the item is already in the cart
+        const existingItem = await checkItemInCart(pool,userID, foodID);
+        let quantity = 1; // Default quantity when adding a new item
+        let arr_Food = await get_all_cakes(pool); // Get all cakes
+        let foodItem = arr_Food.find(item => item.IDFood === foodID); // Get food item by ID
+
+        if (!foodItem) {
+            throw new Error(`Food with ID ${foodID} not found`);
+        }
+
+        let price = foodItem.Price; // Get price from the selected food item
+        let total = price * quantity; // Calculate total
+
+        if (!existingItem) {
+            // Item not in cart, insert new item
+            const insertCartQuery = `
+                INSERT INTO cart (UserID, IDFood, Amount, Price, Total)
+                VALUES (?, ?, ?, ?, ?)
+            `;
+            await pool.query(insertCartQuery,[userID, foodID, quantity, price, total]);
+            return { status: 'added',userID, foodID, quantity, price, total };
+        } else {
+            // Item exists in cart, update the quantity
+            quantity = existingItem.Amount + 1;
+            total = price * quantity;
+
+            const updateCartQuery = `
+                UPDATE cart 
+                SET Amount = ?, Total = ?
+                WHERE UserID = ? AND IDFood = ?
+            `;
+            await pool.query(updateCartQuery, [quantity, total,userID, foodID]);
+            return { status: 'updated',userID, foodID, quantity, price, total };
+        }
+    } catch (error) {
+        console.error('Error adding to cart:', error);
+        return { status: 'error', message: 'An error occurred while adding to the cart.', error };
+    }
+}
+
+//remove item from cart 
+async function rm_itemFromCart(pool, iduser, idfood) {
+    try {
+        // Use the helper function to check if the item exists in the cart
+        const existingItem = await checkItemInCart(pool, iduser, idfood);
+
+        if (!existingItem) {
+            return { status: 'not_found', message: `Item with food ID ${idfood} for user ${iduser} not found in cart.` };
+        }
+
+        // Item exists, proceed with deletion
+        const deleteQuery = `
+            DELETE FROM cart 
+            WHERE UserID = ? AND IDFood = ?;
+        `;
+        await pool.query(deleteQuery, [iduser, idfood]);
+
+        return { status: 'deleted', message: `Item with food ID ${idfood} has been removed from the cart.` };
+    } catch (error) {
+        console.error('Error deleting from cart:', error);
+        return { status: 'error', message: 'An error occurred while deleting the item from the cart.', error };
+    }
+}
+
+//Update item amount
+async function updateItem(pool, userID, foodID, quantity) {
+    try {
+        // Check if the item exists in the cart
+        const existingItem = await checkItemInCart(pool, userID, foodID);
+        
+        if (!existingItem) {
+            return { status: 'not_found', message: `Item with food ID ${foodID} for user ${userID} not found in cart.` };
+        }
+
+        // Get the price of the food item
+        const price = existingItem.Price;
+        
+        // Calculate the total
+        const total = price * quantity;
+
+        // Prepare the update query
+        const updateQuery = `
+            UPDATE cart 
+            SET Amount = ?, Total = ? 
+            WHERE UserID = ? AND IDFood = ?;
+        `;
+        
+        const values = [quantity, total, userID, foodID];
+        
+        // Execute the update query
+        await pool.query(updateQuery, values);
+        
+        return { status: 'updated', userID, foodID, quantity, price, total };
+    } catch (error) {
+        console.error('Error updating item in cart:', error);
+        return { status: 'error', message: 'An error occurred while updating the item in the cart.', error };
+    }
+}
+
+
 
 module.exports = {
 	makePool,
@@ -62,5 +178,10 @@ module.exports = {
 	get_cake,
 	//login and signup
 	Login,
-	signUp
+	signUp,
+	//cart 
+	addCart,
+	rm_itemFromCart,
+	updateItem
+
 };

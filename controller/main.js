@@ -1,5 +1,5 @@
 const handle = require('../DB/connect.js');
-const pool = require('../DB/connect.js').makePool();
+const pool = handle.makePool();
 
 //get all cakes controller
 exports.getCakes = async function (req, res) {
@@ -49,9 +49,12 @@ exports.login = async (req, res) => {
     try {
         const user = await handle.Login(pool, name, pass);
         if (user) {
-            res.status(200).json(
-                {success: true,message: "Login successful",user}
-            );
+            const result = {success: true,message: "Login successful",user};
+            const jsonString = JSON.stringify(result);
+            const base64Encoded1 = Buffer.from(jsonString).toString('base64');
+            const base64Encoded2 = Buffer.from(base64Encoded1).toString('base64');
+            res.cookie('user', `${base64Encoded2}\\`, { maxAge: 15000, httpOnly: true });//milisecond
+            res.status(200).json(result);
         } else {
             res.status(401).json({ success: true, message: "Invalid username or password" });
         }
