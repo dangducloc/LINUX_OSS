@@ -170,7 +170,38 @@ async function updateItem(pool, userID, foodID, quantity) {
     }
 }
 
+async function getCart(pool, idUser) {
+    const sql = `
+        SELECT 
+            cart.UserID,
+            food.Food,
+            cart.IDFood,
+            cart.Price,
+            cart.Amount,
+            food.img_src,
+            (cart.Amount * cart.Price) AS Total
+        FROM 
+            cart 
+        INNER JOIN 
+            food 
+        ON 
+            cart.IDFood = food.IDFood
+        INNER JOIN 
+            user_table 
+        ON 
+            cart.UserID = user_table.IDUser
+        WHERE 
+            cart.UserID = ?;
+    `;
 
+    try {
+        const [results] = await pool.query(sql, [idUser]);
+        return results;
+    } catch (error) {
+        console.error('Error retrieving cart:', error);
+        throw new Error('Failed to retrieve cart data');
+    }
+}
 
 module.exports = {
 	makePool,
@@ -182,6 +213,6 @@ module.exports = {
 	//cart 
 	addCart,
 	rm_itemFromCart,
-	updateItem
-
+	updateItem,
+    getCart
 };
