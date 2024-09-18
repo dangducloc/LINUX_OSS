@@ -1,17 +1,8 @@
 const handle = require("../DB/connect");
 
-const pool = handle.makePool();
+const checkCookie = require("./checkCookie");
 
-function checkCookie(req,res){
-    const cookie = req.cookies['user'];
-    if(cookie != null || cookie != undefined){
-        const foo = Buffer.from(cookie, 'base64').toString('utf-8');
-        const raw_data = JSON.parse(Buffer.from(foo, 'base64').toString('utf-8')); 
-        return {success:true,user:raw_data.user};
-    }else{
-        return {success:false};
-    }
-}
+const pool = handle.pool;
 
 exports.addItem = async (req, res)=> {
     const idfood = req.body.idfood;

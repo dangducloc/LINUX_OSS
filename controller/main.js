@@ -1,5 +1,5 @@
 const handle = require('../DB/connect.js');
-const pool = handle.makePool();
+const pool = handle.pool;
 
 //get all cakes controller
 exports.getCakes = async function (req, res) {
@@ -14,13 +14,13 @@ exports.getCakes = async function (req, res) {
 
 //get cakes by id controller 
 exports.getCake = async function (req, res) {
-    const id = req.params.id
+    const id = req.params.id;
     try {
-        const cake = await handle.get_cake(pool, id)
+        const cake = await handle.get_cake(pool, id);
         if (cake[0]) {
             res.send(cake);
         } else {
-            res.sendStatus(404)
+            res.sendStatus(404);
         }
     } catch (error) {
         res.send({
