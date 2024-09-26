@@ -1,9 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cookieParser = require("cookie-parser");
-const router = require('./router/main');
-const cart = require('./router/cart');
-const comment = require('./router/comments');
+const router = require('./router/index');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -20,8 +18,6 @@ app.get("/", (req, res) => {
     });
 });
 app.use("/api",router);
-app.use("/api",cart);
-app.use("/api",comment);
 
 app.listen(port, () => {
     console.log(`running on: http://localhost:${port}`);

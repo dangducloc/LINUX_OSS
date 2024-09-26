@@ -274,6 +274,16 @@ async function postComment(pool, userId, foodId, commentText) {
     }
 }
 
+async function deleteComment(pool, idComment) {
+    const del = `DELETE FROM comment WHERE idBL = ?;`;
+    try {
+        const result = await pool.query(del, [idComment]);
+        return result;
+    } catch (err) {
+        console.error('Error deleting comment:', err);
+        throw err;
+    }
+}
 
 
 module.exports = {
@@ -290,5 +300,6 @@ module.exports = {
     getCart,
     //comments
     postComment,
-    showComments
+    showComments,
+    deleteComment,
 };
