@@ -16,8 +16,6 @@ const pool = mysql.createPool({
     database: db
 }).promise();
 
-
-
 // Main functions for api
 
 // Get all cakes
@@ -180,18 +178,11 @@ async function getCart(pool, idUser) {
             cart.Amount,
             food.img_src,
             (cart.Amount * cart.Price) AS Total
-        FROM 
-            cart 
-        INNER JOIN 
-            food 
-        ON 
-            cart.IDFood = food.IDFood
-        INNER JOIN 
-            user_table 
-        ON 
-            cart.UserID = user_table.IDUser
-        WHERE 
-            cart.UserID = ?;
+        FROM cart INNER JOIN food 
+        ON cart.IDFood = food.IDFood
+        INNER JOIN user_table 
+        ON cart.UserID = user_table.IDUser
+        WHERE cart.UserID = ?;
     `;
 
     try {
@@ -285,6 +276,54 @@ async function deleteComment(pool, idComment) {
     }
 }
 
+async function checkOut(pool, idUser, address, payment) {
+    try {
+        // Validate inputs
+        const validPayments = ['Credit Card', 'Debit Card', 'Cash'];
+        if (!idUser || !address || !payment) {
+            return { error: true, msg: "User ID, address, and payment method are required." };
+        }
+
+        if (!validPayments.includes(payment)) {
+            return { error: true, msg: "Payment must be Credit/Debit Card or Cash." };
+        }
+
+        // Fetch cart details by user ID
+        const cartData = await getCart(pool, idUser);
+        if (!cartData || cartData.length === 0) {
+            return { error: true, msg: "Your cart is empty!" };
+        }
+
+        // Prepare cart data for insertion
+        const cartItems = cartData.map(item => ({
+            IDFood: item.IDFood,
+            Amount: item.Amount,
+            Price: item.Price
+        }));
+
+        // Insert into the general order information table and retrieve the order ID
+        const insertGeneralQuery = `INSERT INTO general_info_order (IDUser, Address, Payment) VALUES (?,?,?)`;
+        const [generalResult] = await pool.query(insertGeneralQuery, [idUser, address, payment]);
+        const orderId = generalResult.insertId;
+
+        // Prepare the order details data for bulk insertion
+        const orderDetails = cartItems.map(item => [orderId, item.IDFood, item.Amount, item.Price]);
+
+        // Insert order details into the database
+        const insertDetailQuery = `INSERT INTO order_detail (IDOrder, IDFood, Amount, Price) VALUES ?`;
+        await pool.query(insertDetailQuery, [orderDetails]);
+
+        // Clear the user's cart after successful order placement
+        await pool.query(`DELETE FROM cart WHERE UserID = ?`, [idUser]);
+
+        return { success: true, msg: "Order placed successfully!" };
+    } catch (error) {
+        // Return a meaningful error message in case of failure
+        return { error: true, msg: "Error processing checkout.", details: error.message };
+    }
+}
+
+
 
 module.exports = {
     pool,
@@ -302,4 +341,6 @@ module.exports = {
     postComment,
     showComments,
     deleteComment,
+    //checkOut
+    checkOut,
 };
