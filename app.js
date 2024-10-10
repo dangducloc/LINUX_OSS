@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const router = require('./router/index');
+const frontend = require('./router/frontend');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -45,6 +46,9 @@ app.get("/", (req, res) => {
 
 // API routes
 app.use("/api", router);
+
+//frontend 
+app.use("/",frontend);
 
 // Start server
 app.listen(port, () => {
