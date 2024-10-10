@@ -7,11 +7,12 @@ exports.getComments = async (req, res) => {
     const check = checkCookie(req, req);
     if (check.success == true) {
         const rs = await handle.showComments(pool, idfood);
-        res.send(rs);
+        res.status(200).send(rs);
     } else {
-        res.send("fail");
+        res.status(401).send("fail");
     }
-}
+};
+
 
 exports.postComment = async (req, res) => {
     const { idfood, commentText } = req.body;
@@ -19,20 +20,9 @@ exports.postComment = async (req, res) => {
     if (check.success == true) {
         const userid = check.user.IDUser;
         const rs = await handle.postComment(pool, userid, idfood, commentText);
-        res.send(rs);
-    } else {
-        res.send("fail");
-    }
-}
-
-//this is for admin
-exports.deleteComment = async (req, res) => {
-    const check = checkCookie(req, res);
-    if (check.user.role == "admin") {
-        const { idBL } = req.body;
-        const rs = await handle.deleteComment(pool, idBL);
-        res.status(200).send(rs);
+        res.status(201).send(rs);
     } else {
         res.status(401).send("fail");
     }
-}
+};
+
