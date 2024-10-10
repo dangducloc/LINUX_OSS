@@ -2,13 +2,15 @@ const express = require('express');
 const router = express.Router();
 const endpoits = require('../controller/cart');
 
-//get cart
+// get cart
 /**
  * @swagger
  * /api/cart:
  *   get:
  *     summary: Get cart items for a user
  *     description: Retrieve all items in the cart for the logged-in user.
+ *     tags:
+ *       - Member
  *     responses:
  *       200:
  *         description: Successfully retrieved cart items.
@@ -17,15 +19,17 @@ const endpoits = require('../controller/cart');
  *       500:
  *         description: Error fetching cart data.
  */
-router.get("/cart",endpoits.getCart);
+router.get("/cart", endpoits.getCart);
 
-//add item to cart
+// add item to cart
 /**
  * @swagger
  * /api/cart/addItem:
  *   post:
  *     summary: Add an item to the cart
  *     description: Add an item to the user's cart.
+ *     tags:
+ *       - Member
  *     requestBody:
  *       required: true
  *       content:
@@ -46,13 +50,15 @@ router.get("/cart",endpoits.getCart);
  */
 router.post('/cart/addItem', endpoits.addItem);
 
-//update item from cart
+// update item in cart
 /**
  * @swagger
  * /api/cart/updateItem:
  *   put:
  *     summary: Update an item in the cart
  *     description: Update the quantity of an item in the user's cart.
+ *     tags:
+ *       - Member
  *     requestBody:
  *       required: true
  *       content:
@@ -76,13 +82,15 @@ router.post('/cart/addItem', endpoits.addItem);
  */
 router.put('/cart/updateItem', endpoits.updateItem);
 
-//remove item from cart
+// remove item from cart
 /**
  * @swagger
  * /api/cart/deleteItem:
  *   delete:
  *     summary: Delete an item from the cart
  *     description: Remove an item from the user's cart.
+ *     tags:
+ *       - Member
  *     requestBody:
  *       required: true
  *       content:
@@ -101,6 +109,6 @@ router.put('/cart/updateItem', endpoits.updateItem);
  *       500:
  *         description: Error removing item from the cart.
  */
-router.delete('/cart/deleteItem',endpoits.deleteItem);
+router.delete('/cart/deleteItem', endpoits.deleteItem);
 
-module.exports = router
+module.exports = router;

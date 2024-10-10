@@ -1,16 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const endpoits = require('../controller/main')
+const endpoits = require('../controller/main');
 
-//define api rourte
+// Define API routes
 
-//get all cake and get cake by id
+// Get all cakes
 /**
  * @swagger
  * /api/getCakes:
  *   get:
  *     summary: Get all cakes
  *     description: Retrieve a list of all available cakes from the database.
+ *     tags:
+ *       - Member
  *     responses:
  *       200:
  *         description: A list of cakes.
@@ -19,12 +21,15 @@ const endpoits = require('../controller/main')
  */
 router.get('/getCakes', endpoits.getCakes);
 
+// Get cake by ID
 /**
  * @swagger
  * /api/cake/{id}:
  *   get:
  *     summary: Get a cake by ID
  *     description: Retrieve a specific cake by its ID from the database.
+ *     tags:
+ *       - Member
  *     parameters:
  *       - in: path
  *         name: id
@@ -40,7 +45,7 @@ router.get('/getCakes', endpoits.getCakes);
  *       500:
  *         description: Error fetching the cake.
  */
-router.get('/cake/:id',endpoits.getCake);
+router.get('/cake/:id', endpoits.getCake);
 
 // Sign-up route
 /**
@@ -49,6 +54,8 @@ router.get('/cake/:id',endpoits.getCake);
  *   post:
  *     summary: User sign-up
  *     description: Register a new user with name, password, email, and phone number.
+ *     tags:
+ *       - Member
  *     requestBody:
  *       required: true
  *       content:
@@ -79,6 +86,8 @@ router.post('/auth/signup', endpoits.signUp);
  *   post:
  *     summary: User login
  *     description: Authenticate a user with a username and password.
+ *     tags:
+ *       - Member
  *     requestBody:
  *       required: true
  *       content:
@@ -100,6 +109,4 @@ router.post('/auth/signup', endpoits.signUp);
  */
 router.post('/auth/login', endpoits.login);
 
-
 module.exports = router;
-

@@ -2,13 +2,15 @@ const express = require('express');
 const router = express.Router();
 const endpoits = require('../controller/comments');
 
-//get comment via idfood
+// Get comment via idfood
 /**
  * @swagger
  * /api/comments/{idfood}:
  *   get:
  *     summary: Get comments for a food item
  *     description: Retrieve all comments for a specific food item.
+ *     tags:
+ *       - Member
  *     parameters:
  *       - name: idfood
  *         in: path
@@ -24,15 +26,17 @@ const endpoits = require('../controller/comments');
  *       500:
  *         description: Error fetching comments.
  */
-router.get("/comments/:idfood",endpoits.getComments);
+router.get("/comments/:idfood", endpoits.getComments);
 
-//post a comment
+// Post a comment
 /**
  * @swagger
  * /api/comments/postComment:
  *   post:
  *     summary: Post a comment for a food item
  *     description: Add a comment for a specific food item.
+ *     tags:
+ *       - Member
  *     requestBody:
  *       required: true
  *       content:
@@ -56,36 +60,7 @@ router.get("/comments/:idfood",endpoits.getComments);
  *         description: Unauthorized access or invalid cookie.
  *       500:
  *         description: Error posting comment.
- */ 
+ */
 router.post('/comments/postComment', endpoits.postComment);
 
-//detele a comment
-/**
- * @swagger
- * /api/comments/deleteComment:
- *   delete:
- *     summary: Delete a comment (Admin only)
- *     description: Delete a comment by ID (Only accessible to admin users).
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               idBL:
- *                 type: integer
- *                 description: ID of the comment to delete.
- *             required:
- *               - idBL
- *     responses:
- *       200:
- *         description: Comment deleted successfully.
- *       401:
- *         description: Unauthorized access or invalid role.
- *       500:
- *         description: Error deleting comment.
- */
-router.delete('/comments/deleteComment',endpoits.deleteComment);
-
-module.exports = router
+module.exports = router;

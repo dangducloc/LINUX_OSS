@@ -2,14 +2,15 @@ const express = require('express');
 const router = express.Router();
 const endpoits = require('../controller/checkOut');
 
-
-//Checkout
+// Checkout
 /**
  * @swagger
- * /api/checkout:
+ * /api/checkOut:
  *   post:
  *     summary: Checkout a user's cart
  *     description: Complete the checkout process for the user's cart. Requires login.
+ *     tags:
+ *       - Member
  *     requestBody:
  *       required: true
  *       content:
@@ -35,6 +36,6 @@ const endpoits = require('../controller/checkOut');
  *       500:
  *         description: Error during the checkout process.
  */
-router.post("/checkOut",endpoits.checkOut);
+router.post("/checkOut", endpoits.checkOut);
 
-module.exports = router
+module.exports = router;

@@ -15,7 +15,7 @@ const swaggerOptions = {
     definition: {
         openapi: "3.0.0",
         info: {
-            title: "My Project API",
+            title: "BACKEND FOR LINUX&OSS PROJECT",
             version: "1.0.0",
             description: "API documentation for My Project",
         },
@@ -25,7 +25,7 @@ const swaggerOptions = {
             },
         ],
     },
-    apis: ["./router/*.js"], // Path to the API docs (adjust the path based on your project)
+    apis: ["./router/*.js"], 
 };
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
