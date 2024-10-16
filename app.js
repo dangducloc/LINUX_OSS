@@ -10,6 +10,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cookieParser()); // Cookie-parser middleware
+app.set('view engine', 'ejs');// set the view engine to ejs
 
 // Swagger configuration
 const swaggerOptions = {
