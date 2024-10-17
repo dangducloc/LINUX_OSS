@@ -56,7 +56,7 @@ exports.login = async (req, res) => {
             res.cookie('user', `${base64Encoded2}.`, { maxAge: 360000, httpOnly: true });//milisecond
             res.status(200).json(result);
         } else {
-            res.status(401).json({ success: true, message: "Invalid username or password" });
+            res.status(401).json({ success: false, message: "Invalid username or password" });
         }
     } catch (error) {
         res.status(500).json({ error: "Error during login", details: error });

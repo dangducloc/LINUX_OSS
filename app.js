@@ -4,11 +4,13 @@ const cookieParser = require("cookie-parser");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const router = require('./router/index');
+const frontend = require('./router/frontend');
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cookieParser()); // Cookie-parser middleware
+app.set('view engine', 'ejs');// set the view engine to ejs
 
 // Swagger configuration
 const swaggerOptions = {
@@ -45,6 +47,9 @@ app.get("/", (req, res) => {
 
 // API routes
 app.use("/api", router);
+
+//frontend 
+app.use("/",frontend);
 
 // Start server
 app.listen(port, () => {
