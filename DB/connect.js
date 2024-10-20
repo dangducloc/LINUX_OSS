@@ -175,13 +175,17 @@ async function getCart(pool, idUser) {
             food.Food,
             cart.IDFood,
             cart.Price,
+            food.amount AS left_amount,
             cart.Amount,
             food.img_src,
+            Type,
             (cart.Amount * cart.Price) AS Total
         FROM cart INNER JOIN food 
         ON cart.IDFood = food.IDFood
         INNER JOIN user_table 
         ON cart.UserID = user_table.IDUser
+        INNER JOIN type_of_food 
+        ON food.TypeID = type_of_food.IDType
         WHERE cart.UserID = ?;
     `;
 
@@ -214,7 +218,9 @@ async function showComments(pool, foodId) {
         INNER JOIN 
             user_table ON comment.IDUser = user_table.IDUser 
         WHERE 
-            comment.IDFood = ?;
+            comment.IDFood = ?
+        ORDER BY 
+            comment.Date DESC;
         `;
 
         const [results] = await pool.query(query, [foodId]);

@@ -53,7 +53,7 @@ exports.login = async (req, res) => {
             const jsonString = JSON.stringify(result);
             const base64Encoded1 = Buffer.from(jsonString).toString('base64');
             const base64Encoded2 = Buffer.from(base64Encoded1).toString('base64');
-            res.cookie('user', `${base64Encoded2}.`, { maxAge: 360000, httpOnly: true });//milisecond
+            res.cookie('user', `${base64Encoded2}.`, { maxAge: 3600000, httpOnly: true });//milisecond
             res.status(200).json(result);
         } else {
             res.status(401).json({ success: false, message: "Invalid username or password" });

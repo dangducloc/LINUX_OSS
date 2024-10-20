@@ -27,6 +27,7 @@ exports.index = async (req, res) => {
         return res.redirect("/login");
     }
 };
+
 exports.detail = async (req, res) => {
     const id = req.params.id;
     const check = checkCookie(req, req);
@@ -48,20 +49,40 @@ exports.detail = async (req, res) => {
         const comments = await raw_comments.json();
         const User_name = check.user.User_name
         return res.render("detail", { food: food[0], User_name, comments });
-
-
-
     } else {
         return res.redirect("/login");
     }
 };
+
+exports.carts = async (req,res) => {
+    const check = checkCookie(req, req);
+    if (check.success == true) {
+        const raw_carts = await fetch(`http://192.168.30.138:3000/api/cart`, {
+            method: 'GET', // You can use 'GET' explicitly or leave it out since it's the default
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': `user=${req.cookies['user']}` // Replace 'your_cookie_value' with the actual cookie value
+            },
+            credentials: 'include' // This ensures cookies are sent with the request
+        });
+        
+        const carts = await raw_carts.json();
+        const User_name = check.user.User_name
+        return res.render("cart", { User_name, carts });
+    } else {
+        return res.redirect("/login");
+    }
+};
+
 exports.login = async (req, res) => {
     return res.render("login");
 };
+
 exports.logout = async (req, res) => {
     res.clearCookie('user');
     return res.redirect("/login");
 };
+
 exports.signup = async (req, res) => {
     return res.render("signup");
 };
