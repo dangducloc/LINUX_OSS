@@ -176,7 +176,7 @@ exports.getOrderDetails_via_IDOrder = async (req, res) => {
     const check = checkCookie(req, res);
     if (check.user.role === "admin") {
         const { IDOrder } = req.params;
-        const result = await admin.getOrderDetailsWithFoodByIDOrder(IDOrder);
+        const result = await admin.getOrderDetails_via_IDOrder(IDOrder);
         return res.status(result.success ? 200 : 404).send(result);
     } else {
         res.status(403).send("Access denied.");

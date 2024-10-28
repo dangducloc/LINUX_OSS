@@ -20,10 +20,16 @@ exports.index = async (req, res) => {
     const response = await fetch(api);
     const foods = await response.json();
     const check = checkCookie(req, req);
-    if (check.success == true) {
-        const User_name = check.user.User_name;
-        return res.render("index", { foods, User_name });
-    } else {
+    if (check.success) {
+        if (check.user.role === "admin") {
+            return res.redirect("/admin");
+        }
+        if (check.user.role === "member") {
+            const User_name = check.user.User_name;
+            return res.render("index", { foods, User_name });
+        }
+    }
+    else {
         return res.redirect("/login");
     }
 };
@@ -45,7 +51,7 @@ exports.detail = async (req, res) => {
             },
             credentials: 'include' // This ensures cookies are sent with the request
         });
-        
+
         const comments = await raw_comments.json();
         const User_name = check.user.User_name
         return res.render("detail", { food: food[0], User_name, comments });
@@ -54,7 +60,7 @@ exports.detail = async (req, res) => {
     }
 };
 
-exports.carts = async (req,res) => {
+exports.carts = async (req, res) => {
     const check = checkCookie(req, req);
     if (check.success == true) {
         const raw_carts = await fetch(`http://192.168.30.138:3000/api/cart`, {
@@ -65,7 +71,7 @@ exports.carts = async (req,res) => {
             },
             credentials: 'include' // This ensures cookies are sent with the request
         });
-        
+
         const carts = await raw_carts.json();
         const User_name = check.user.User_name
         return res.render("cart", { User_name, carts });
@@ -85,4 +91,20 @@ exports.logout = async (req, res) => {
 
 exports.signup = async (req, res) => {
     return res.render("signup");
+};
+
+
+exports.dashboard = async (req, res) => {
+    const check = checkCookie(req, req);
+    if (check.success) {
+        if (check.user.role === "admin") {
+            const api = "http://192.168.30.138:3000/api/getCakes";
+            const response = await fetch(api);
+            const foods = await response.json();
+            return res.render("dashboard", { foods });
+        }
+        else {
+            return res.redirect("/home");
+        }
+    }
 };

@@ -11,6 +11,7 @@ router.get("/login",frontend.login);
 router.get("/logout",frontend.logout);
 router.get("/signup",frontend.signup);
 router.get("/cart",frontend.carts);
+router.get("/admin",frontend.dashboard);
 router.get("/demo",(req,res)=>{
     res.sendFile(path.join(__dirname, '../views/components.html'));
 });
