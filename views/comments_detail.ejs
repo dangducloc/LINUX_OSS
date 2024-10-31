@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../assets/admin/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../assets/admin/css/bootstrap.min.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
     />
-    <link rel="stylesheet" href="../assets/admin/css/dataTables.bootstrap5.min.css" />
-    <link rel="stylesheet" href="../assets/admin/css/style.css" />
+    <link rel="stylesheet" href="../../assets/admin/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="../../assets/admin/css/style.css" />
     <title>Dashboard</title>
   </head>
   <body>
@@ -144,6 +144,7 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive">
+                  <% if(comments.success){%>
                   <table
                     id="example"
                     class="table table-striped data-table"
@@ -151,37 +152,37 @@
                   >
                     <thead>
                       <tr>
-                        <th class="text-center">IDFood</th>
-                        <th class="text-center">Image</th>
-                        <th class="text-center">Food</th>
-                        <th class="text-center">Price</th>
-                        <th class="text-center">Left amount</th>
-                        <th class="text-center">Type</th>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">Time</th>
+                        <th class="text-center">User</th>
+                        <th class="text-center">Content</th>
+                        <th class="text-center">Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <% foods.forEach((food)=>{%>
-                        <tr class="food" data-idfood="<%=food.IDFood%>">
-                          <td class="text-center"><%=food.IDFood%></td>
-                          <td class="w-25 text-center"><img src="../<%=food.img_src%>" class="w-50" alt=""></td>
-                          <td class="w-25 text-center"><%=food.Food%></td>
-                          <td class="w-25 text-center"><%=food.Price%></td>
-                          <td class="w-25 text-center"><%=food.Amount%></td>
-                          <td class="w-25 text-center"><%=food.Type%></td>
+                      <% comments.comments.forEach((item)=>{%>
+                        <tr class="food" data-idcomment="<%=item.idBL%>">
+                          <td class="text-center"><%=item.idBL%></td>
+                          <td class="w-25 text-center"><%=item.Date%></td>
+                          <td class="w-25 text-center"><%=item.User_name%></td>
+                          <td class="w-50 text-center"><%-item.Comment%></td>
+                          <td class="w-25 text-center"><Button class="delete btn btn-danger" data-idcomment="<%=item.idBL%>" >Delete</Button></td>
                         </tr>
                       <%})%>
                     </tbody>
                     <tfoot>
                       <tr>
-                        <th class="text-center">IDFood</th>
-                        <th class="text-center">Image</th>
-                        <th class="text-center">Food</th>
-                        <th class="text-center">Price</th>
-                        <th class="text-center">Left amount</th>
-                        <th class="text-center">Type</th>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">Time</th>
+                        <th class="text-center">User</th>
+                        <th class="text-center">Content</th>
+                        <th class="text-center">Action</th>
                       </tr>
                     </tfoot>
                   </table>
+                  <%}else{%>
+                    <%=comments.message%>
+                    <%}%>
                 </div>
               </div>
             </div>
@@ -189,11 +190,11 @@
         </div>
       </div>
     </main>
-    <script src="../assets/admin/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/admin/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
-    <script src="../assets/admin/js/jquery-3.5.1.js"></script>
-    <script src="../assets/admin/js/jquery.dataTables.min.js"></script>
-    <script src="../assets/admin/js/dataTables.bootstrap5.min.js"></script>
-    <script src="../assets/admin/js/script.js"></script>
+    <script src="../../assets/admin/js/jquery-3.5.1.js"></script>
+    <script src="../../assets/admin/js/jquery.dataTables.min.js"></script>
+    <script src="../../assets/admin/js/dataTables.bootstrap5.min.js"></script>
+    <script src="../../assets/admin/js/comments.js"></script>
   </body>
 </html>

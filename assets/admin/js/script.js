@@ -1,7 +1,7 @@
 const foods = document.getElementsByClassName("food");
 Array.from(foods).forEach((item) => {
 	item.addEventListener("click", () => {
-		window.location = `/edit_food/${item.getAttribute("data-idfood")}`;
+		window.location = `admin/edit_food/${item.getAttribute("data-idfood")}`;
  	});
 });
 

@@ -1,7 +1,6 @@
 const checkCookie = require("./checkCookie");
 const path = require('path');
 const fs = require('fs');
-const { log } = require("console");
 
 exports.imgs = async (req, res) => {
     const filename = req.query.filename;
@@ -104,7 +103,70 @@ exports.dashboard = async (req, res) => {
             return res.render("dashboard", { foods });
         }
         else {
+            return res.redirect("/login");
+        }
+    }
+};
+
+exports.admin_comments = async (req, res) => {
+    const check = checkCookie(req, req);
+    if (check.success) {
+        if (check.user.role === "admin") {
+            const api = "http://192.168.30.138:3000/api/getCakes";
+            const response = await fetch(api);
+            const foods = await response.json();
+            return res.render("comments", { foods });
+        }
+        else {
             return res.redirect("/home");
         }
     }
 };
+
+exports.admin_comments_detail = async (req, res) => {
+    const check = checkCookie(req, req);
+    if (check.success) {
+        const {id} = req.params;
+
+        const raw_comments = await fetch(`http://192.168.30.138:3000/api/comments/${id}`, {
+            method: 'GET', // You can use 'GET' explicitly or leave it out since it's the default
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': `user=${req.cookies['user']}` // Replace 'your_cookie_value' with the actual cookie value
+            },
+            credentials: 'include' // This ensures cookies are sent with the request
+        });
+
+        const comments = await raw_comments.json();
+        if (check.user.role === "admin") {
+            // return res.send(comments);
+            return res.render("comments_detail", { comments});
+        }
+        else {
+            return res.redirect("/home");
+        }
+    }
+};
+
+exports.admin_users = async (req, res) => {
+    const check = checkCookie(req, req);
+    if (check.success) {
+        if (check.user.role === "admin") {
+            const api = "http://192.168.30.138:3000/api/admin/getUsers";
+            const response = await fetch(api ,{
+                method: 'GET', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': `user=${req.cookies['user']}`  
+                },
+                credentials: 'include' 
+            });
+            const users = await response.json();
+            // log(users);
+            return res.render("user", { users:users.users[0] });
+        }
+        else {
+            return res.redirect("/home");
+        }
+    }
+}

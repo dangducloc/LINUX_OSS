@@ -154,9 +154,7 @@
                         <th class="text-center">IDFood</th>
                         <th class="text-center">Image</th>
                         <th class="text-center">Food</th>
-                        <th class="text-center">Price</th>
-                        <th class="text-center">Left amount</th>
-                        <th class="text-center">Type</th>
+                        <th class="text-center">Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -165,9 +163,7 @@
                           <td class="text-center"><%=food.IDFood%></td>
                           <td class="w-25 text-center"><img src="../<%=food.img_src%>" class="w-50" alt=""></td>
                           <td class="w-25 text-center"><%=food.Food%></td>
-                          <td class="w-25 text-center"><%=food.Price%></td>
-                          <td class="w-25 text-center"><%=food.Amount%></td>
-                          <td class="w-25 text-center"><%=food.Type%></td>
+                          <td class="w-25 text-center"><Button class="comment btn btn-primary" data-idfood="<%=food.IDFood%>" >View Comments</Button></td>
                         </tr>
                       <%})%>
                     </tbody>
@@ -176,9 +172,7 @@
                         <th class="text-center">IDFood</th>
                         <th class="text-center">Image</th>
                         <th class="text-center">Food</th>
-                        <th class="text-center">Price</th>
-                        <th class="text-center">Left amount</th>
-                        <th class="text-center">Type</th>
+                        <th class="text-center">Action</th>
                       </tr>
                     </tfoot>
                   </table>
@@ -194,6 +188,6 @@
     <script src="../assets/admin/js/jquery-3.5.1.js"></script>
     <script src="../assets/admin/js/jquery.dataTables.min.js"></script>
     <script src="../assets/admin/js/dataTables.bootstrap5.min.js"></script>
-    <script src="../assets/admin/js/script.js"></script>
+    <script src="../assets/admin/js/comments.js"></script>
   </body>
 </html>

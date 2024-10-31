@@ -124,6 +124,7 @@
                 <span>View all Comments</span>
               </a>
             </li>
+            
           </ul>
         </nav>
       </div>
@@ -151,34 +152,31 @@
                   >
                     <thead>
                       <tr>
-                        <th class="text-center">IDFood</th>
-                        <th class="text-center">Image</th>
-                        <th class="text-center">Food</th>
-                        <th class="text-center">Price</th>
-                        <th class="text-center">Left amount</th>
-                        <th class="text-center">Type</th>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">User_name</th>
+                        <th class="text-center">Mail</th>
+                        <th class="text-center">Role</th>
+                        <th class="text-center">Delete</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <% foods.forEach((food)=>{%>
-                        <tr class="food" data-idfood="<%=food.IDFood%>">
-                          <td class="text-center"><%=food.IDFood%></td>
-                          <td class="w-25 text-center"><img src="../<%=food.img_src%>" class="w-50" alt=""></td>
-                          <td class="w-25 text-center"><%=food.Food%></td>
-                          <td class="w-25 text-center"><%=food.Price%></td>
-                          <td class="w-25 text-center"><%=food.Amount%></td>
-                          <td class="w-25 text-center"><%=food.Type%></td>
+                      <% users.forEach((user)=>{%>
+                        <tr class="food" data-idfood="<%=user.IDUser%>">
+                          <td class="w-25 text-center"><%=user.IDUser%></td>
+                          <td class="w-25 text-center"><%=user.User_name%></td>
+                          <td class="w-25 text-center"><%=user.Mail%></td>
+                          <td class="w-25 text-center"><%=user.role%></td>
+                          <td class="w-25 text-center"><Button class="delete btn btn-danger" data-iduser="<%=user.IDUser%>" data-name="<%=user.User_name%>">Delete</Button></td>
                         </tr>
                       <%})%>
                     </tbody>
                     <tfoot>
                       <tr>
-                        <th class="text-center">IDFood</th>
-                        <th class="text-center">Image</th>
-                        <th class="text-center">Food</th>
-                        <th class="text-center">Price</th>
-                        <th class="text-center">Left amount</th>
-                        <th class="text-center">Type</th>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">User_name</th>
+                        <th class="text-center">Mail</th>
+                        <th class="text-center">Role</th>
+                        <th class="text-center">Delete</th>
                       </tr>
                     </tfoot>
                   </table>
@@ -194,6 +192,6 @@
     <script src="../assets/admin/js/jquery-3.5.1.js"></script>
     <script src="../assets/admin/js/jquery.dataTables.min.js"></script>
     <script src="../assets/admin/js/dataTables.bootstrap5.min.js"></script>
-    <script src="../assets/admin/js/script.js"></script>
+    <script src="../assets/admin/js/userhandle.js"></script>
   </body>
 </html>
