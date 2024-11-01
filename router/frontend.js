@@ -10,8 +10,15 @@ router.get("/assets/imgs",frontend.imgs);
 router.get("/login",frontend.login);
 router.get("/logout",frontend.logout);
 router.get("/signup",frontend.signup);
+router.get("/cart",frontend.carts);
 router.get("/demo",(req,res)=>{
     res.sendFile(path.join(__dirname, '../views/components.html'));
 });
+
+//admin here
+router.get("/admin",frontend.dashboard);
+router.get("/admin/user",frontend.admin_users);
+router.get("/admin/comments",frontend.admin_comments);
+router.get("/admin/comments/:id",frontend.admin_comments_detail);
 
 module.exports = router;

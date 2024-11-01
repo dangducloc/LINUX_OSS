@@ -16,30 +16,30 @@
                 background-color: transparent !important;
             }
 
-            .scrollable-div::-webkit-scrollbar {
+            *::-webkit-scrollbar {
                 width: 12px;
                 /* Width of the scrollbar */
             }
 
-            .scrollable-div::-webkit-scrollbar-track {
+            *::-webkit-scrollbar-track {
                 background: transparent;
                 /* Transparent track */
             }
 
-            .scrollable-div::-webkit-scrollbar-thumb {
+            *::-webkit-scrollbar-thumb {
                 background-color: rgba(136, 136, 136, 0.5);
                 /* Transparent scrollbar thumb */
                 border-radius: 6px;
                 /* Rounded corners */
             }
 
-            .scrollable-div::-webkit-scrollbar-thumb:hover {
+            *::-webkit-scrollbar-thumb:hover {
                 background-color: rgba(85, 85, 85, 0.5);
                 /* Darker transparent on hover */
             }
 
             /* Firefox scrollbar with transparency */
-            .scrollable-div {
+            * {
                 scrollbar-width: thin;
                 /* Thin scrollbar */
                 scrollbar-color: rgba(136, 136, 136, 0.5) transparent;
@@ -101,13 +101,13 @@
                         <!-- Comments section -->
                         <section class="comments-section" aria-labelledby="comments-heading">
                             <h3 id="comments-heading">Leave a Comment</h3>
-                            <form id="comment-form">
+                            <div id="comment-form">
                                 <div class="mb-3">
                                     <label for="comment" class="form-label">Your Comment:</label>
                                     <textarea class="form-control" id="comment" rows="3" required></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </form>
+                                <button type="button" id="postcomment" class="btn btn-primary">Submit</button>
+                            </div>
                         </section>
                         <!-- End of comments section -->
                     </div>
@@ -137,15 +137,16 @@
                         <section id="comments-list" class="mt-3">
                             <h5>Previous Comments</h5>
                             <div class="comments-list">
-                                <ul class="list-group list-group-flush">
+                                <ul id="commentList" class="list-group list-group-flush">
                                     <!-- Placeholder for comments -->
                                     <% if(comments.success){ const commentsList=comments.comments;
                                         commentsList.forEach((comment)=> {
                                         %>
-                                        <i class="date">
-                                            <%=comment.Date %>
-                                        </i>
+                                        
                                         <li class="list-group-item ">
+                                            <i class="date">
+                                                <%=comment.Date %>
+                                            </i>
                                             <p><strong class="px-4">
                                                     <%=comment.User_name %>:
                                                 </strong><%-comment.Comment %></p>
@@ -167,20 +168,7 @@
 
         <%- include('./components/footer'); -%>
             <%- include('./components/script'); -%>
-                <script>
-                    // Select all elements with the class 'date'
-                    const dateElements = document.querySelectorAll('.date');
-
-                    // Loop through each element
-                    dateElements.forEach(element => {
-                        const dateString = element.textContent; // Get the current date text
-                        console.log(dateString);
-                        const datePart = dateString.split('T')[0];
-
-                        // Update the content of the element with the formatted date
-                        element.textContent = datePart;
-                    });
-                </script>
+            <script src="../assets/js/addcart_and_postcomment.js"></script>
 
 </body>
 
